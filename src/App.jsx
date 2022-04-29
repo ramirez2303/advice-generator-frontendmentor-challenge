@@ -1,17 +1,11 @@
-import {
-  Heading,
-  IconButton,
-  Image,
-  Spinner,
-  Stack,
-  Text,
-} from "@chakra-ui/react";
-import dividerDesk from "./images/pattern-divider-desktop.svg";
-import dividerMob from "./images/pattern-divider-mobile.svg";
-import diceIcon from "./images/icon-dice.svg";
+import { Spinner, Stack } from "@chakra-ui/react";
+
 import useAdvice from "./hooks/useAdvice";
 import { useState } from "react";
-import { GiDiceSixFacesFive } from "react-icons/gi";
+
+import Advice from "./components/Advice";
+import Divider from "./components/Divider";
+import DiceButton from "./components/DiceButton";
 
 function App() {
   const [click, setClick] = useState(0);
@@ -30,7 +24,6 @@ function App() {
         bgColor="secondary.200"
         borderRadius="2xl"
         boxShadow="rgba(0, 0, 0, 0.56) 0px 22px 70px 4px"
-        justifyContent="flex-start"
         alignItems="center"
         gap={8}
         pt={{ base: 12, md: 16 }}
@@ -39,46 +32,10 @@ function App() {
         m="auto"
       >
         <Stack alignItems="center" gap={5}>
-          {isLoading ? (
-            <Spinner color="#fff" />
-          ) : (
-            <>
-              <Text
-                fontSize="x-small"
-                letterSpacing={3.5}
-                fontWeight="600"
-                color="primary.200"
-              >
-                {`ADVICE #${advice.id}`}
-              </Text>
-              <Heading textAlign="center" color="primary.100" fontSize="xl">
-                {`"${advice.advice}".`}
-              </Heading>
-            </>
-          )}
+          {isLoading ? <Spinner color="#fff" /> : <Advice advice={advice} />}
         </Stack>
-        <Image
-          src={dividerDesk}
-          alt="card divider"
-          display={{ base: "none", md: "flex" }}
-        />
-        <Image
-          src={dividerMob}
-          alt="card divider"
-          display={{ base: "flex", md: "none" }}
-        />
-        <IconButton
-          icon={<GiDiceSixFacesFive />}
-          position="absolute"
-          bottom="-28px"
-          w="60px"
-          h="60px"
-          fontSize="4xl"
-          bgColor="primary.200"
-          isRound="true"
-          onClick={handleRandomAdvice}
-          cursor="pointer"
-        />
+        <Divider />
+        <DiceButton handleRandomAdvice={handleRandomAdvice} />
       </Stack>
     </div>
   );
