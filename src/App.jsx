@@ -1,9 +1,27 @@
-import { Heading, Image, Stack, Text } from "@chakra-ui/react";
+import {
+  Heading,
+  IconButton,
+  Image,
+  Spinner,
+  Stack,
+  Text,
+} from "@chakra-ui/react";
 import dividerDesk from "./images/pattern-divider-desktop.svg";
 import dividerMob from "./images/pattern-divider-mobile.svg";
 import diceIcon from "./images/icon-dice.svg";
+import useAdvice from "./hooks/useAdvice";
+import { useState } from "react";
+import { GiDiceSixFacesFive } from "react-icons/gi";
 
 function App() {
+  const [click, setClick] = useState(0);
+
+  const handleRandomAdvice = () => {
+    setClick(Math.random);
+  };
+
+  const { advice, isLoading } = useAdvice(click);
+
   return (
     <div className="App">
       <Stack
@@ -21,18 +39,23 @@ function App() {
         m="auto"
       >
         <Stack alignItems="center" gap={5}>
-          <Text
-            fontSize="x-small"
-            letterSpacing={3.5}
-            fontWeight="600"
-            color="primary.200"
-          >
-            ADVICE #117
-          </Text>
-          <Heading textAlign="center" color="primary.100" fontSize="xl">
-            "Frase random Frase random Frase random Frase random Frase random
-            Frase random Frase random Frase random".
-          </Heading>
+          {isLoading ? (
+            <Spinner color="#fff" />
+          ) : (
+            <>
+              <Text
+                fontSize="x-small"
+                letterSpacing={3.5}
+                fontWeight="600"
+                color="primary.200"
+              >
+                {`ADVICE #${advice.id}`}
+              </Text>
+              <Heading textAlign="center" color="primary.100" fontSize="xl">
+                {`"${advice.advice}".`}
+              </Heading>
+            </>
+          )}
         </Stack>
         <Image
           src={dividerDesk}
@@ -44,15 +67,18 @@ function App() {
           alt="card divider"
           display={{ base: "flex", md: "none" }}
         />
-        <Stack
+        <IconButton
+          icon={<GiDiceSixFacesFive />}
           position="absolute"
           bottom="-28px"
-          p={4}
+          w="60px"
+          h="60px"
+          fontSize="4xl"
           bgColor="primary.200"
-          borderRadius="full"
-        >
-          <Image src={diceIcon} alt="dice icon button" />
-        </Stack>
+          isRound="true"
+          onClick={handleRandomAdvice}
+          cursor="pointer"
+        />
       </Stack>
     </div>
   );
